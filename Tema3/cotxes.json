@@ -1,0 +1,64 @@
+{"oferta": {"vehiculos": [
+    {
+        "precio_oferta": "10000",
+        "marca": "ford",
+        "motor": {
+            "nombre_motor": "duratorc 1.4",
+            "combustible": "gasolina"
+        },
+        "precio_inicial": "12000",
+        "foto": [
+            "11325.jpg",
+            "11326.jpg"
+        ],
+        "kilometros": "12500",
+        "extra": [
+            {
+                "valor": "250",
+                "nombre_extra": "pintura metalizada"
+            },
+            {
+                "valor": "300",
+                "nombre_extra": "llantas"
+            }
+        ],
+        "matricula": "1234AAA",
+        "modelo": {
+            "nombre_modelo": "focus",
+            "color": "gris"
+        }
+    },
+    {
+        "precio_oferta": "9000",
+        "marca": "ford",
+        "motor": {
+            "nombre_motor": "duratorc 2.0",
+            "combustible": "diesel"
+        },
+        "precio_inicial": "10000",
+        "foto": [
+            "11327.jpg",
+            "11328.jpg"
+        ],
+        "kilometros": "125000",
+        "extra": [
+            {
+                "valor": "250",
+                "nombre_extra": "pintura metalizada"
+            },
+            {
+                "valor": "200",
+                "nombre_extra": "spoiler trasero"
+            },
+            {
+                "valor": "500",
+                "nombre_extra": "climatizador"
+            }
+        ],
+        "matricula": "1235AAA",
+        "modelo": {
+            "nombre_modelo": "focus",
+            "color": "gris"
+        }
+    }
+]}}
