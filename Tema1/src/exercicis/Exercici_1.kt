@@ -9,7 +9,7 @@ fun main(a: Array<String>) {
 	var f = File.listRoots()[0]
 	var opcio = 0
 	while (opcio != -1) {
-		llistaDirectori(f)
+		llistaDirectoriComplet(f)
 		println()
 		println("Introdueix un número (-1 per acabar):")
 		opcio = Integer.parseInt(BufferedReader(InputStreamReader(System.`in`)).readLine());
@@ -50,6 +50,28 @@ fun llistaDirectori(f: File) {
 			println(e.getName() + "\t " + e.length())
 		if (e.isDirectory())
 			println(e.getName() + "\t <Directori>")
+		i += 1
+
+	}
+}
+
+fun llistaDirectoriComplet(f: File) {
+	val s = "Llista de fitxers i directoris del directori " + f.getCanonicalPath()
+	println(s)
+	println("-".repeat(s.length))
+	println("  0.- Directori pare")
+	var i = 1
+	val pattern = "dd-MM-yyyy HH:mm";
+	val simpleDateFormat = SimpleDateFormat(pattern);
+	for (e in f.listFiles().sorted()) {
+		var cad = "" + i.toString().padStart(3,' ') + ".- "
+		cad += if(e.isDirectory()) "d" else "-"
+		cad += if(e.canRead()) "r" else "-"
+		cad += if(e.canWrite()) "w" else "-"
+		cad += if(e.canExecute()) "x" else "-"
+
+		cad += "" + e.length().toString().padStart(9,' ') + " " + simpleDateFormat.format(e.lastModified()) + " " + e.getName()
+		println(cad)
 		i += 1
 
 	}
