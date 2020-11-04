@@ -1,17 +1,17 @@
 package dades
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.Session
+import org.hibernate.SessionFactory
+import org.hibernate.cfg.Configuration
 
-import dades.Comarca
+import classes.Comarca
 
 fun main(args: Array<String>) {
-	val sf = Configuration().configure().buildSessionFactory()
-	val sessio = sf.openSession();
-	val com = sessio.load("dades.Comarca","Alt Maestrat") as Comarca
+	//val sf = Configuration().configure().buildSessionFactory()
+	//val sessio = sf.openSession();
+	/*val com = sessio.load("classes.Comarca","Alt Maestrat") as Comarca
 	print("Comarca " + com.nomC + ": ")
-	print(com.getProvincia());
-	println(" (" + com.getPoblacios().size + " pobles)");
-	sessio.close();
+	print(com.provincia)
+	println(" (" + com.poblacios?.size + " pobles)")*/
+	//sessio.close()
 }

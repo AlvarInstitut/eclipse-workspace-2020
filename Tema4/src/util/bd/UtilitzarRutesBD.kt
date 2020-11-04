@@ -14,11 +14,11 @@ fun main(args: Array<String>) {
 		punts.add(PuntGeo(noms[i], Coordenades(latituds[i], longituds[i])))
 	}
 
-	gRutes.inserir(Ruta("Pelegrins de Les Useres",896,1738,punts))
+	//gRutes.inserir(Ruta("Pelegrins de Les Useres",896,1738,punts))
 
 	// Llistat de totes les rutes
 	for (r in gRutes.llistat())
-		r?.mostrarRuta()
+		r.mostrarRuta()
 
 	// Buscar una ruta determinada
 	val r2 = gRutes.buscar(2)

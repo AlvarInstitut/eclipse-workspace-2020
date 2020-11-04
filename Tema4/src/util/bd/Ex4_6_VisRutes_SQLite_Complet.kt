@@ -114,7 +114,7 @@ class FinestraComplet : JFrame() {
 	}
 
 	fun inicialitzar() {
-		// instruccions per a iniialitzar llistat i numActual
+		// instruccions per a iniialitzar llista i numActual
 		llista = gRutes.llistat()
 		numActual = 0
 	}

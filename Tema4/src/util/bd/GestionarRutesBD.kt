@@ -4,7 +4,7 @@ import java.sql.Connection
 import java.sql.DriverManager
 
 class GestionarRutesBD {
-	val con: Connection = DriverManager.getConnection("jdbc:sqlite:Rutes.sqlite")
+	val con = DriverManager.getConnection("jdbc:sqlite:Rutes.sqlite")
 
 	init {
 		val st = con.createStatement()

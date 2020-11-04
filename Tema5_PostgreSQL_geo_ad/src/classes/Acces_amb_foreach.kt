@@ -1,5 +1,8 @@
 package dades
 
+import classes.SessionFactoryUtil
+import classes.Comarca
+
 fun main(args: Array<String>) {
 
         val sessio = SessionFactoryUtil.getSessionFactory().openSession()
@@ -8,7 +11,7 @@ fun main(args: Array<String>) {
 
         for (com  in q.list() as List<Comarca>){
 			//com as Comarca
-            System.out.println(com.getNomC() + " - " + com.getProvincia())
+            System.out.println(com.nomC + " - " + com.provincia)
 		}
  
     }
