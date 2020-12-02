@@ -1,0 +1,18 @@
+2020-11-13 08:31:01 INFO  Version:37 - HCANN000001: Hibernate Commons Annotations {4.0.1.Final}
+2020-11-13 08:31:01 INFO  Version:41 - HHH000412: Hibernate Core {4.0.1.Final}
+2020-11-13 08:31:01 INFO  Environment:239 - HHH000206: hibernate.properties not found
+2020-11-13 08:31:01 INFO  Environment:342 - HHH000021: Bytecode provider name : javassist
+2020-11-13 08:31:01 INFO  Configuration:1920 - HHH000043: Configuring from resource: /hibernate.cfg.xml
+2020-11-13 08:31:01 INFO  Configuration:1939 - HHH000040: Configuration resource: /hibernate.cfg.xml
+2020-11-13 08:31:02 INFO  Configuration:714 - HHH000221: Reading mappings from resource: dades/Punt.hbm.xml
+2020-11-13 08:31:02 INFO  Configuration:714 - HHH000221: Reading mappings from resource: dades/Ruta.hbm.xml
+2020-11-13 08:31:02 INFO  Configuration:2061 - HHH000041: Configured SessionFactory: null
+2020-11-13 08:31:02 INFO  DriverManagerConnectionProviderImpl:90 - HHH000402: Using Hibernate built-in connection pool (not for production use!)
+2020-11-13 08:31:02 INFO  DriverManagerConnectionProviderImpl:110 - HHH000115: Hibernate connection pool size: 20
+2020-11-13 08:31:02 INFO  DriverManagerConnectionProviderImpl:113 - HHH000006: Autocommit mode: false
+2020-11-13 08:31:02 INFO  DriverManagerConnectionProviderImpl:127 - HHH000401: using driver [org.postgresql.Driver] at URL [jdbc:postgresql://89.36.214.106:5432/rutes]
+2020-11-13 08:31:02 INFO  DriverManagerConnectionProviderImpl:132 - HHH000046: Connection properties: {user=rutes, password=****}
+2020-11-13 08:31:02 INFO  Dialect:121 - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQLDialect
+2020-11-13 08:31:02 INFO  LobCreatorBuilder:85 - HHH000422: Disabling contextual LOB creation as connection was null
+2020-11-13 08:31:02 INFO  TransactionFactoryInitiator:68 - HHH000399: Using default transaction strategy (direct JDBC transactions)
+2020-11-13 08:31:02 INFO  ASTQueryTranslatorFactory:48 - HHH000397: Using ASTQueryTranslatorFactory

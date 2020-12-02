@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 15 de nov. 2020, 14:40:03 by Hibernate Tools 5.2.12.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class dynamic-insert="false" dynamic-update="false" mutable="true" name="classes.Alumne" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="alumne">
+        <id name="dni" type="string">
+            <column length="10" name="dni"/>
+            <generator class="assigned"/>
+        </id>
+        <many-to-one class="classes.Professor" embed-xml="true" fetch="select" insert="true" name="professor" not-found="exception" optimistic-lock="true" unique="false" update="true">
+            <column length="10" name="dni_p"/>
+        </many-to-one>
+        <property generated="never" lazy="false" name="nom" optimistic-lock="true" type="string" unique="false">
+            <column length="25" name="nom"/>
+        </property>
+        <property generated="never" lazy="false" name="dataN" optimistic-lock="true" type="timestamp" unique="false">
+            <column length="35" name="data_n"/>
+        </property>
+        <property generated="never" lazy="false" name="diaC" optimistic-lock="true" type="string" unique="false">
+            <column length="10" name="dia_c"/>
+        </property>
+        <property generated="never" lazy="false" name="horaC" optimistic-lock="true" type="java.lang.Double" unique="false">
+            <column name="hora_c" precision="17" scale="17"/>
+        </property>
+        <property generated="never" lazy="false" name="aprovat" optimistic-lock="true" type="string" unique="false">
+            <column length="2" name="aprovat"/>
+        </property>
+        <property generated="never" lazy="false" name="baixa" optimistic-lock="true" type="string" unique="false">
+            <column length="2" name="baixa"/>
+        </property>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="practiqueses" optimistic-lock="true" sort="unsorted" table="practiques">
+            <key on-delete="noaction">
+                <column length="10" name="dni" not-null="true"/>
+            </key>
+            <one-to-many class="classes.Practiques" embed-xml="true" not-found="exception"/>
+        </set>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="examens" optimistic-lock="true" sort="unsorted" table="examen">
+            <key on-delete="noaction">
+                <column length="10" name="dni" not-null="true"/>
+            </key>
+            <one-to-many class="classes.Examen" embed-xml="true" not-found="exception"/>
+        </set>
+    </class>
+</hibernate-mapping>

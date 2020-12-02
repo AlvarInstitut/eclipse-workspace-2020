@@ -23,19 +23,19 @@ fun main(args: Array<String>) {
 			emp.setAttribute("numero", Integer.toString(e.num))
 
 			val nom = doc.createElement ("nom")
-			nom.appendChild(doc.createTextNode(e.nom))
+			nom.appendChild(doc.createTextNode(e.nom)) // forma llarga: afegim un fill que és un node de text
 			emp.appendChild(nom)
 
 			val dep = doc.createElement("departament")
-			dep.appendChild(doc.createTextNode(e.departament.toString()))
+			dep.setTextContent(e.departament.toString()) // forma curta: setTextContent()
 			emp.appendChild(dep)
 
 			val edat = doc.createElement("edat")
-			edat.appendChild(doc.createTextNode(e.edat.toString()))
+			edat.setTextContent(e.edat.toString())
 			emp.appendChild(edat)
 
 			val sou = doc.createElement("sou");
-			sou.appendChild(doc.createTextNode(e.sou.toString()))
+			sou.setTextContent(e.sou.toString())
 			emp.appendChild(sou)
 
 			arrel.appendChild(emp)

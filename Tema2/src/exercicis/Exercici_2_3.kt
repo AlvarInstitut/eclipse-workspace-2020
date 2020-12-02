@@ -9,18 +9,18 @@ class Exercici_2_3 : JFrame() {
 	val scrollPane = JScrollPane(area)
 
 	val menu_p = JMenuBar()
-    
-    val menu_arxiu = JMenu("Arxiu")
-    val menu_ajuda = JMenu("Ajuda")
-    
-    val obrir = JMenuItem("Obrir")
-    val guardar = JMenuItem("Guardar")
-    val guardarCom = JMenuItem("Guardar com ...")
-    val eixir = JMenuItem("Eixir")
 
-    val quantA = JMenuItem("Quant a Editor")
-    
-    val fCh = JFileChooser()
+	val menu_arxiu = JMenu("Arxiu")
+	val menu_ajuda = JMenu("Ajuda")
+
+	val obrir = JMenuItem("Obrir")
+	val guardar = JMenuItem("Guardar")
+	val guardarCom = JMenuItem("Guardar com ...")
+	val eixir = JMenuItem("Eixir")
+
+	val quantA = JMenuItem("Quant a Editor")
+
+	val fCh = JFileChooser()
 
 	// en iniciar posem un contenidor per als elements anteriors
 	init {
@@ -32,18 +32,18 @@ class Exercici_2_3 : JFrame() {
 		area.setEditable(true)
 
 		setSize(750, 400)
-        setJMenuBar(menu_p)
+		setJMenuBar(menu_p)
 
-        menu_p.add(menu_arxiu)
-        menu_p.add(menu_ajuda)
-        
-        menu_arxiu.add(obrir)
-        menu_arxiu.add(guardar)
-        menu_arxiu.add(guardarCom)
-        menu_arxiu.add(JSeparator())
-        menu_arxiu.add(eixir)
-        
-        menu_ajuda.add(quantA);
+		menu_p.add(menu_arxiu)
+		menu_p.add(menu_ajuda)
+
+		menu_arxiu.add(obrir)
+		menu_arxiu.add(guardar)
+		menu_arxiu.add(guardarCom)
+		menu_arxiu.add(JSeparator())
+		menu_arxiu.add(eixir)
+
+		menu_ajuda.add(quantA);
 
 		obrir.addActionListener { obrir() }
 
@@ -58,14 +58,15 @@ class Exercici_2_3 : JFrame() {
 
 	fun obrir() {
 		// Instruccions per a obrir un fitxer i posar el contingut en el JTextArea
-		if(fCh.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
+		val r = fCh.showOpenDialog(this)
+		if (r == JFileChooser.APPROVE_OPTION) {
 			area.setText(fCh.getSelectedFile().readText())
 		}
 	}
 
 	fun guardar() {
 		// Instruccions per a guardar el contingut del JTextArea al fitxer.
-		if (fCh.getSelectedFile()!=null)
+		if (fCh.getSelectedFile() != null)
 			fCh.getSelectedFile().writeText(area.getText())
 		else
 			guardarCom()
@@ -73,9 +74,11 @@ class Exercici_2_3 : JFrame() {
 
 	fun guardarCom() {
 		// Instruccions per a guardar el contingut del JTextArea al fitxer, amb la possibilitat de canviar el nom
-		if(fCh.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
+		val r = fCh.showSaveDialog(this)
+		if (r == JFileChooser.APPROVE_OPTION) {
 			fCh.getSelectedFile().writeText(area.getText())
 		}
+
 	}
 
 	fun eixir() {
@@ -85,12 +88,13 @@ class Exercici_2_3 : JFrame() {
 
 	fun quantA() {
 		// Instruccions per a mostrar un diàleg amb la versió (Acerca de...)
-		JOptionPane.showMessageDialog(this, "Editor de text v 1.0","Quant a Editor",JOptionPane.INFORMATION_MESSAGE)
+		JOptionPane.showMessageDialog(this, "Editor 1.0")
 	}
 }
 
 
 fun main(args: Array<String>) {
-	EventQueue.invokeLater( { Exercici_2_3().isVisible = true })
+	EventQueue.invokeLater({ Exercici_2_3().isVisible = true })
 }
+
 

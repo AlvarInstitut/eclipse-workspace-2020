@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 15 de nov. 2020, 14:40:03 by Hibernate Tools 5.2.12.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class dynamic-insert="false" dynamic-update="false" mutable="true" name="classes.Vehicle" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="vehicle">
+        <id name="matricula" type="string">
+            <column length="10" name="matricula"/>
+            <generator class="assigned"/>
+        </id>
+        <property generated="never" lazy="false" name="model" optimistic-lock="true" type="string" unique="false">
+            <column length="25" name="model"/>
+        </property>
+        <property generated="never" lazy="false" name="dataC" optimistic-lock="true" type="timestamp" unique="false">
+            <column length="35" name="data_c"/>
+        </property>
+        <property generated="never" lazy="false" name="km" optimistic-lock="true" type="java.lang.Integer" unique="false">
+            <column name="km"/>
+        </property>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="practiqueses" optimistic-lock="true" sort="unsorted" table="practiques">
+            <key on-delete="noaction">
+                <column length="10" name="cotxe"/>
+            </key>
+            <one-to-many class="classes.Practiques" embed-xml="true" not-found="exception"/>
+        </set>
+    </class>
+</hibernate-mapping>

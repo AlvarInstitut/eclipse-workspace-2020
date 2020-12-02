@@ -18,13 +18,15 @@ fun main(args: Array<String>) {
 	empresa.put("empleat", empleats)
 
 	for (i in 0..3) {
-		val emp = JSONObject()
-		emp.put("num", i + 1)
+		val emp = LinkedHashMap<String,String>()
+		emp.put("num", (i + 1).toString())
 		emp.put("nom", noms[i])
-		emp.put("departament", departaments[i])
-		emp.put("edat", edats[i])
-		emp.put("sou", sous[i])
-		empleats.put(emp)
+		emp.put("departament", departaments[i].toString())
+		emp.put("edat", edats[i].toString())
+		emp.put("sou", sous[i].toString())
+		println(emp)
+		println(emp.toSortedMap())
+		empleats.put(emp.toSortedMap())
 	}
 	val f = FileWriter("Empleats.json")
 	f.write(arrel.toString(4))

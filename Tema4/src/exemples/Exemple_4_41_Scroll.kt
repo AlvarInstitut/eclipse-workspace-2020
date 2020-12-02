@@ -94,6 +94,8 @@ class Exemple_4_41_Scroll : JFrame() {
 		
 		tancar.addActionListener{
 			rs.close()
+			st.close()
+			con.close()
 			System.exit(0)
 		}
 	}
@@ -107,3 +109,4 @@ class Exemple_4_41_Scroll : JFrame() {
 fun main(args: Array<String>) {
 	EventQueue.invokeLater({ Exemple_4_41_Scroll().isVisible = true })
 }
+

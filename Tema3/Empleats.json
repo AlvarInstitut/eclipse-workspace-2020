@@ -1,30 +1,30 @@
 {"empresa": {"empleat": [
     {
-        "sou": 1000,
+        "sou": "1000.0",
+        "edat": "32",
         "nom": "Andreu",
-        "edat": 32,
-        "num": 1,
-        "departament": 10
+        "departament": "10",
+        "num": "1"
     },
     {
-        "sou": 1200,
+        "sou": "1200.0",
+        "edat": "28",
         "nom": "Bernat",
-        "edat": 28,
-        "num": 2,
-        "departament": 20
+        "departament": "20",
+        "num": "2"
     },
     {
-        "sou": 1100,
+        "sou": "1100.0",
+        "edat": "26",
         "nom": "Clàudia",
-        "edat": 26,
-        "num": 3,
-        "departament": 10
+        "departament": "10",
+        "num": "3"
     },
     {
-        "sou": 1500,
+        "sou": "1500.0",
+        "edat": "40",
         "nom": "Damià",
-        "edat": 40,
-        "num": 4,
-        "departament": 10
+        "departament": "10",
+        "num": "4"
     }
 ]}}

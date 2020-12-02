@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 2 de nov. 2020, 8:37:52 by Hibernate Tools 5.4.18.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class dynamic-insert="false" dynamic-update="false" mutable="true" name="classes.Usuari" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="usuari">
+        <id name="num" type="int">
+            <column name="num"/>
+            <generator class="assigned"/>
+        </id>
+        <property generated="never" lazy="false" name="missatge" optimistic-lock="true" type="string" unique="false">
+            <column name="missatge"/>
+        </property>
+        <property generated="never" lazy="false" name="nom" optimistic-lock="true" type="string" unique="false">
+            <column name="nom"/>
+        </property>
+    </class>
+</hibernate-mapping>

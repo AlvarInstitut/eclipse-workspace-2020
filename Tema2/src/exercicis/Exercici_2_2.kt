@@ -1,10 +1,12 @@
 package exercicis
 
+
 import javax.swing.*
 import java.awt.*
+import java.io.FileReader
 import java.io.File
 
-class Exercici_2_2 : JFrame() {
+class Exercici_2_2_Pantalla : JFrame() {
 	val et_f = JLabel("Fitxer:")
 	val fitxer = JTextField(25)
 	val obrir = JButton("Obrir")
@@ -38,30 +40,41 @@ class Exercici_2_2 : JFrame() {
 		add(panell2)
 		pack()
 
-		obrir.addActionListener { obrir() }
+		obrir.addActionListener {
+			// Instruccions per a bolcar el contingut del fitxer en el JTextArea
+			val f = File(fitxer.getText())
+			if (f.exists()) {
+				area.setText(f.readText())
+				/*
+                val f_in=FileReader(f)
+                var c = f_in.read()   // Aquesta seria la forma més llarga, però en Kotlin amb la línia 47 tenim prou
+                var cad =""
+                while (c!=-1){
+                    cad += c.toChar().toString()
+                    c = f_in.read()
+				}
+				area.setText(cad)
+                f_in.close()
+                */ 
+			}
+		}
 
-		guardar.addActionListener { guardar() }
-	}
-
-	fun obrir() {
-		// Instruccions per a bolcar el contingut del fitxer en el JTextArea
-		if (File(fitxer.getText()).exists())
-			area.setText(File(fitxer.getText()).readText())
-		else
-			println("No existeix el fitxer")
-	}
-
-	fun guardar() {
-		// Instruccions per a guardar el contingut del JTextArea al fitxer.
-		if (fitxer.getText() != "")
-			File(fitxer.getText()).writeText(area.getText())
-		else
-			println("No pots deixar en blanc elnom del fitxer")
+		guardar.addActionListener {
+			// Instruccions per a guardar el contingut del JTextArea al fitxer.
+			if (fitxer.getText()!="") {
+				File(fitxer.getText()).writeText(area.getText())
+			}
+		}
 	}
 }
 
+private fun crearMostrarFinestra() {
+
+	val frame = Exercici_2_2_Pantalla()
+	frame.isVisible = true
+}
 
 fun main(args: Array<String>) {
-	EventQueue.invokeLater( { Exercici_2_2().isVisible = true })
+	EventQueue.invokeLater(::crearMostrarFinestra)
 }
 
