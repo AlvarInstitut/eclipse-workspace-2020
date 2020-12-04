@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+ <session-factory name="Anota">
+  <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+  <property name="hibernate.connection.password">geo_ad</property>
+  <property name="hibernate.connection.url">jdbc:postgresql://89.36.214.106/geo_ad</property>
+  <property name="hibernate.connection.username">geo_ad</property>
+  <property name="hibernate.default_schema">public</property>
+  <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+  <mapping class="classes.Comarca"/>
+  <mapping class="classes.Institut"/>
+  <mapping class="classes.Poblacio"/>
+ </session-factory>
+</hibernate-configuration>
