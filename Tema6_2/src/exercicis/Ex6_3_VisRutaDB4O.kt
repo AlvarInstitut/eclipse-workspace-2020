@@ -1,7 +1,7 @@
 package exercicis
 
 import com.db4o.Db4oEmbedded
-import util.bd.Ruta
+import utilBd.Ruta
 
 fun main(){
 	val bd = Db4oEmbedded.openFile("Rutes.db4o")

@@ -13,20 +13,20 @@ import javax.swing.JLabel
 import javax.swing.JTextField
 import javax.swing.JTable
 import javax.swing.JScrollPane
-
-import util.bd.Ruta
-import util.bd.PuntGeo
-import util.bd.Coordenades
-import util.bd.GestionarRutesBD
 import javax.swing.table.DefaultTableModel
+
+import utilBd.Ruta
+import utilBd.PuntGeo
+import utilBd.Coordenades
 import com.db4o.Db4oEmbedded
+import com.db4o.EmbeddedObjectContainer
 
 class FinestraAvancat : JFrame() {
 	var llista = arrayListOf<Ruta>()
 	var numActual = 0
 
-		// Declaració de la Base de Dades
-	val bd = Db4oEmbedded.openFile("Rutes.db4o")
+	// Declaració de la Base de Dades amb lateinit, per a inicialitzar després
+	lateinit var bd: EmbeddedObjectContainer
 
 	var actualitzant = false
 	var modificacio = ""
@@ -55,6 +55,15 @@ class FinestraAvancat : JFrame() {
 		defaultCloseOperation = JFrame.EXIT_ON_CLOSE
 		setTitle("JDBC: Visualitzar Rutes Complet")
 		setLayout(GridLayout(0, 1))
+
+		// Inicialització de la BD, amb opcions de modificar i esborrar en cascada
+		val conf = Db4oEmbedded.newConfiguration()
+		conf.common().objectClass("utilBd.Ruta").cascadeOnUpdate(true)
+		conf.common().objectClass("utilBd.PuntGeo").cascadeOnUpdate(true)
+		conf.common().objectClass("utilBd.Ruta").cascadeOnDelete(true)
+		conf.common().objectClass("utilBd.PuntGeo").cascadeOnDelete(true)
+		bd = Db4oEmbedded.openFile(conf, "Rutes.db4o")
+
 
 		val p_prin = JPanel()
 		p_prin.setLayout(BoxLayout(p_prin, BoxLayout.Y_AXIS))
@@ -129,7 +138,7 @@ class FinestraAvancat : JFrame() {
 			VisRuta()
 		}
 		tancar.addActionListener {
-			gRutes.close()
+			bd.close()
 			System.exit(0)
 		}
 
@@ -170,19 +179,23 @@ class FinestraAvancat : JFrame() {
 
 				when (modificacio) {
 					"editar" -> {
-						gRutes.guardar(IniRuta())
-						llista = gRutes.llistat()
+						val r = llista[numActual]
+						AssignaRuta(r)
+						bd.store(r)
+						llista = agafarRutes()
 					}
 					"esborrar" -> {
-						gRutes.esborrar(llista.get(numActual))
-						llista = gRutes.llistat()
+						bd.delete(llista.get(numActual))
+						llista = agafarRutes()
 						if (numActual == llista.size)
 							numActual--
 					}
 					"inserir" -> {
 						val nomR = qNom.getText()
-						gRutes.inserir(IniRuta())
-						llista = gRutes.llistat()
+						val r = Ruta(null, null, null)
+						AssignaRuta(r)
+						bd.store(r)
+						llista = agafarRutes()
 						var i = 0
 						while (nomR != llista.get(i).nom)
 							i++
@@ -239,16 +252,22 @@ class FinestraAvancat : JFrame() {
 
 	fun inicialitzar() {
 		// instruccions per a iniialitzar llistat i numActual
-		llista = gRutes.llistat()
+
+		llista = agafarRutes()
 		numActual = 0
 	}
 
 	fun VisRuta() {
-		// instruccions per a visualitzar la ruta actual (l'índex el tenim en numActual
+		// instruccions per a visualitzar la ruta actual (l'índex el tenim en numActual)
 		val rutaActual = llista.get(numActual)
 		qNom.setText(rutaActual.nom)
 		qDesn.setText(rutaActual.desnivell.toString())
 		qDesnAcum.setText(rutaActual.desnivellAcumulat.toString())
+		var d = 0.0
+		for (i in 0 until rutaActual.llistaDePunts.size - 1)
+			d += Dist(rutaActual.llistaDePunts[i].coord.latitud,rutaActual.llistaDePunts[i].coord.longitud,
+						rutaActual.llistaDePunts[i+1].coord.latitud,rutaActual.llistaDePunts[i+1].coord.longitud)
+		qDistancia.setText(d.toString())
 		plenarTaula(rutaActual.llistaDePunts)
 		ActivarBotons()
 	}
@@ -286,6 +305,7 @@ class FinestraAvancat : JFrame() {
 	}
 
 	fun ActivarQuadres(b: Boolean) {
+		// instruccions per activar (o desactivar) els quadres de text i el JTable
 		qNom.setEditable(b)
 		qDesn.setEditable(b)
 		qDesnAcum.setEditable(b)
@@ -293,6 +313,7 @@ class FinestraAvancat : JFrame() {
 	}
 
 	fun PosarQuadresBlanc() {
+		//instruccions per a posar en blanc els quadres de text i el JTable quan anem a una nova ruta
 		qNom.setText("")
 		qDesn.setText("")
 		qDesnAcum.setText("")
@@ -301,23 +322,58 @@ class FinestraAvancat : JFrame() {
 		punts.setModel(javax.swing.table.DefaultTableModel(ll, caps))
 	}
 
-	fun IniRuta(): Ruta {
-		val r = Ruta()
+	fun AssignaRuta(r: Ruta) {
+		// instruccions per a guardar en el paràmetre r el valor dels quadres de text i JTable
 		r.nom = qNom.getText()
 		r.desnivell = qDesn.getText().toInt()
 		r.desnivellAcumulat = qDesnAcum.getText().toInt()
-		for (i in 0 until punts.getRowCount()) {
-			r.addPunt(
-				PuntGeo(
-					punts.getValueAt(i, 0).toString(),
-					Coordenades(
-						punts.getValueAt(i, 1).toString().toDouble(),
-						punts.getValueAt(i, 2).toString().toDouble()
+		val m = Math.min(r.llistaDePunts.size, punts.getRowCount())
+		for (i in 0 until m) {
+			r.llistaDePunts[i].nom = punts.getValueAt(i, 0).toString()
+			r.llistaDePunts[i].coord.latitud = punts.getValueAt(i, 1).toString().toDouble()
+			r.llistaDePunts[i].coord.longitud = punts.getValueAt(i, 2).toString().toDouble()
+		}
+		if (r.llistaDePunts.size < punts.getRowCount())
+			for (i in r.llistaDePunts.size until punts.getRowCount()) {
+				r.addPunt(
+					PuntGeo(
+						punts.getValueAt(i, 0).toString(),
+						Coordenades(
+							punts.getValueAt(i, 1).toString().toDouble(),
+							punts.getValueAt(i, 2).toString().toDouble()
+						)
 					)
 				)
+			}
+		if (r.llistaDePunts.size > punts.getRowCount())
+			for (i in (r.llistaDePunts.size - 1) downTo punts.getRowCount()) {
+				bd.delete(r.llistaDePunts[i])
+				r.llistaDePunts.removeAt(i)
+				println("Esborrem el " + i)
+			}
+	}
+
+	fun agafarRutes(): ArrayList<Ruta> {
+		// instruccions per a tornar totes les rutes de la Base de Dades
+		return ArrayList(bd.queryByExample<Ruta>(Ruta(null, null, null)))
+	}
+
+	fun Dist(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+		val R = 6378.137 // Radi de la Tierra en km
+		val dLat = rad(lat2 - lat1)
+		val dLong = rad(lon2 - lon1)
+
+		val a =
+			Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(rad(lat1)) * Math.cos(rad(lat2)) * Math.sin(dLong / 2) * Math.sin(
+				dLong / 2
 			)
-		}
-		return (r)
+		val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+		val d = R * c
+		return Math.round(d * 100.0) / 100.0
+	}
+
+	fun rad(x: Double): Double {
+		return x * Math.PI / 180
 	}
 }
 

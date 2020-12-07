@@ -3,9 +3,9 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.jetbrains.kotlin.core.KOTLIN_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/media/assignatura/Curs 2020-2021/2DAM/AD/Drivers 2019/mysql-connector-java-5.1.48.jar"/>
-	<classpathentry kind="lib" path="/media/assignatura/Curs 2020-2021/2DAM/AD/Drivers 2019/ojdbc8.jar"/>
-	<classpathentry kind="lib" path="/media/assignatura/Curs 2020-2021/2DAM/AD/Drivers 2019/postgresql-42.2.8.jar"/>
-	<classpathentry kind="lib" path="/media/assignatura/Curs 2020-2021/2DAM/AD/Drivers 2019/sqlite-jdbc-3.27.2.1.jar"/>
+	<classpathentry kind="lib" path="/home/alvar/Drivers 2020/mysql-connector-java-8.0.20.jar"/>
+	<classpathentry kind="lib" path="/home/alvar/Drivers 2020/ojdbc10.jar"/>
+	<classpathentry kind="lib" path="/home/alvar/Drivers 2020/postgresql-42.2.12.jar"/>
+	<classpathentry kind="lib" path="/home/alvar/Drivers 2020/sqlite-jdbc-3.32.3.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

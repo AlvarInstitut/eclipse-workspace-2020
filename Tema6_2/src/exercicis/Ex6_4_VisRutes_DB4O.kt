@@ -14,8 +14,8 @@ import javax.swing.JTextField
 import javax.swing.JTable
 import javax.swing.JScrollPane
 
-import util.bd.Ruta
-import util.bd.PuntGeo
+import utilBd.Ruta
+import utilBd.PuntGeo
 import com.db4o.Db4oEmbedded
 
 class FinestraComplet : JFrame() {
