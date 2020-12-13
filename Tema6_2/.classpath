@@ -3,7 +3,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.jetbrains.kotlin.core.KOTLIN_CONTAINER"/>
-	<classpathentry kind="lib" path="/media/assignatura/Curs 2020-2021/2DAM/AD/Drivers 2020/sqlite-jdbc-3.32.3.2.jar"/>
-	<classpathentry kind="lib" path="/media/assignatura/Curs 2020-2021/2DAM/AD/Drivers 2020/db4o-8.0.276.16149-core-java5.jar"/>
+	<classpathentry kind="lib" path="/home/alvar/Drivers 2020/db4o-8.0.276.16149-core-java5.jar"/>
+	<classpathentry kind="lib" path="/home/alvar/Drivers 2020/sqlite-jdbc-3.32.3.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

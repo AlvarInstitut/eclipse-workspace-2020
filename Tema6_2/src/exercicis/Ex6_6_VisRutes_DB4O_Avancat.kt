@@ -251,8 +251,7 @@ class FinestraAvancat : JFrame() {
 	}
 
 	fun inicialitzar() {
-		// instruccions per a iniialitzar llistat i numActual
-
+		// instruccions per a inicialitzar llistat i numActual
 		llista = agafarRutes()
 		numActual = 0
 	}
@@ -317,7 +316,8 @@ class FinestraAvancat : JFrame() {
 		qNom.setText("")
 		qDesn.setText("")
 		qDesnAcum.setText("")
-		var ll = Array(1) { arrayOfNulls<String>(3) }
+		qDistancia.setText("")
+		var ll = Array(0) { arrayOfNulls<String>(3) }
 		val caps = arrayOf("Nom punt", "Latitud", "Longitud")
 		punts.setModel(javax.swing.table.DefaultTableModel(ll, caps))
 	}
