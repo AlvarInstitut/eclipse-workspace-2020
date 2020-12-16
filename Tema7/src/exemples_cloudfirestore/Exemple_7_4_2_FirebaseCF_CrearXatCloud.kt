@@ -60,7 +60,7 @@ class CrearXat : JFrame() {
 	// en iniciar posem un contenidor per als elements anteriors
 	init {
 		defaultCloseOperation = JFrame.EXIT_ON_CLOSE
-		setBounds(100, 100, 450, 300)
+		setBounds(100, 100, 550, 400)
 		setLayout(BorderLayout())
 		// contenidor per als elements
 		//Hi haurà títol. Panell de dalt: últim missatge. Panell de baix: per a introduir missatge. Panell central: tot el xat
@@ -145,14 +145,16 @@ class CrearXat : JFrame() {
 		if (listenerMissatges != null)
 			listenerMissatges!!.remove()
 
-		listenerMissatges = database?.collection("Xats")?.document("XatProva")?.collection("missatges")
-			?.addSnapshotListener { snapshots, e ->
+		listenerMissatges = database?.collection("Xats")?.document(comboXats.getSelectedItem().toString())?.collection("missatges")?.orderBy("data")?.addSnapshotListener { snapshots, e ->
 
 				for (dc in snapshots!!.getDocumentChanges()) {
 					val sdf = SimpleDateFormat("dd-MM-yyyy HH:mm")
+					if (dc.getDocument().getLong("data")!=null){
 					val d = sdf.format (Date (dc.getDocument().getLong("data")!!))
 					area.append(dc.getDocument().getString("nom") + " (" + d + "): "+ dc.getDocument().getString("contingut") + "\n")
-					area.append(dc.getDocument().getString("nom") + ": " + dc.getDocument().getString("contingut") + "\n")
+					}
+					else
+						area.append(dc.getDocument().getString("nom") + ": " + dc.getDocument().getString("contingut") + "\n")
 				}
 			}
 	}
@@ -162,20 +164,20 @@ class CrearXat : JFrame() {
 	// Per a guardar dades. Sobre /Xats/XatProva i després sobre /Xats/Xat1
 	fun enviar() {
 		val database = FirestoreClient.getFirestore()
-		val docXatProva = database.collection("Xats").document("XatProva")
+		val docXat = database.collection("Xats").document(comboXats.getSelectedItem().toString())
 
 		val dades = HashMap<String, Any>()
 		dades.put("ultimUsuari", usuari.getText())
 		dades.put("ultimMissatge", missatge.getText())
 
-		docXatProva.update(dades)
+		docXat.update(dades)
 
 		val dades2 = HashMap<String, Any>()
 		dades2.put("nom", usuari.getText())
 		dades2.put("contingut", missatge.getText())
 		
-		val m = Missatge(usuari.getText(), Date()., missatge.getText())
-			database.collection("Xats").document(comboXats.getSelectedItem().toString()).collection("missatges").add(m)
+		val m = Missatge(usuari.getText(), System.currentTimeMillis(), missatge.getText())
+			docXat.collection("missatges").add(m)
 	}
 
 }
