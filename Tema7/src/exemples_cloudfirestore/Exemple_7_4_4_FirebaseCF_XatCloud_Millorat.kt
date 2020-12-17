@@ -1,6 +1,5 @@
 package exemples_cloudfirestore
 
-
 import java.awt.EventQueue
 import javax.swing.JFrame
 import javax.swing.JLabel
@@ -8,6 +7,7 @@ import javax.swing.JTextArea
 import javax.swing.JButton
 import javax.swing.JTextField
 import javax.swing.JPanel
+import javax.swing.JComboBox
 import java.awt.BorderLayout
 import java.awt.FlowLayout
 import java.awt.GridLayout
@@ -26,8 +26,17 @@ import com.google.cloud.firestore.FirestoreException
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import com.google.firebase.cloud.FirestoreClient
+import com.google.cloud.firestore.ListenerRegistration
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.time.LocalDateTime
 
-class CrearXatCloud : JFrame() {
+class Missatge(var nom: String, var data: Long, var contingut: String)
+
+class XatCloudMillorat : JFrame() {
+
+	val etComboXats = JLabel("Llista de tots els xats disponibles:")
+	val comboXats = JComboBox<String>()
 
 	val etUsuari = JLabel("Nom Usuari:")
 	val usuari = JTextField(25)
@@ -42,21 +51,31 @@ class CrearXatCloud : JFrame() {
 	val enviar = JButton("Enviar")
 	val missatge = JTextField(15)
 
+	var database: Firestore? = null
+	var docRef: DocumentReference? = null
+
+	var listenerUltimMissatge: ListenerRegistration? = null
+	var listenerMissatges: ListenerRegistration? = null
+
 	// en iniciar posem un contenidor per als elements anteriors
 	init {
 		defaultCloseOperation = JFrame.EXIT_ON_CLOSE
-		setBounds(100, 100, 450, 300)
+		setBounds(100, 100, 550, 400)
 		setLayout(BorderLayout())
 		// contenidor per als elements
 		//Hi haurà títol. Panell de dalt: últim missatge. Panell de baix: per a introduir missatge. Panell central: tot el xat
 
+		val panell10 = JPanel(FlowLayout())
+		panell10.add(etComboXats)
+		panell10.add(comboXats)
 		val panell11 = JPanel(FlowLayout())
 		panell11.add(etUsuari)
 		panell11.add(usuari)
 		val panell12 = JPanel(FlowLayout())
 		panell12.add(etUltimMissatge)
 		panell12.add(ultimMissatge)
-		val panell1 = JPanel(GridLayout(2, 1))
+		val panell1 = JPanel(GridLayout(3, 1))
+		panell1.add(panell10)
 		panell1.add(panell11)
 		panell1.add(panell12)
 		getContentPane().add(panell1, BorderLayout.NORTH)
@@ -76,6 +95,7 @@ class CrearXatCloud : JFrame() {
 		getContentPane().add(panell3, BorderLayout.SOUTH)
 
 		setVisible(true)
+		comboXats.addActionListener() { inicialitzarXat() }
 		enviar.addActionListener { enviar() }
 
 		val serviceAccount = FileInputStream("acces-a-dades-6e5a6-firebase-adminsdk-ei7uc-fcf7da56aa.json")
@@ -86,53 +106,57 @@ class CrearXatCloud : JFrame() {
 
 		FirebaseApp.initializeApp(options)
 
+		database = FirestoreClient.getFirestore()
+
+
+		// Exemple de llegir tots els documents d'una col·lecció
+		// Per a triar el xat
+		val documents = database?.collection("Xats")?.get()?.get()?.getDocuments()
+		for (document in documents!!) {
+			comboXats.addItem(document.getId())
+		}
+		comboXats.setSelectedIndex(0)
+
+	}
+
+	fun inicialitzarXat() {
+		docRef = database?.collection("Xats")?.document(comboXats.getSelectedItem().toString())
+		area.setText("")
+
 		// Exemple de lectura única: senzillament sobre un ApiFuture i sobre ell get()
 		// Per a posar el títol. Sobre /Xats/XatProva/nomXat
-		val database = FirestoreClient.getFirestore()
-		val docRef = database.collection("Xats").document("XatProva")
-		val future = docRef.get()
-		val nomXat = future.get().getString("nomXat")
+		val future = docRef?.get()
+		val nomXat = future?.get()?.getString("nomXat")
 		this.setTitle(nomXat)
 
 		// Exemple de listener de lectura contínua addSnapshotListener()
-		// Per a posar l'últim missatge registrat. Sobre /Xats/XatProva/ultimUsuari i /Xats/XatProva/ultimMissatge DocumentSnapshot FirestoreException
-		docRef.addSnapshotListener { snapshot, e ->
-			if (e != null) {
-				System.err.println("Listen failed: " + e)
-				return@addSnapshotListener
-			}
+		// Per a posar l'últim missatge registrat. Sobre /Xats/XatProva/ultimUsuari i /Xats/XatProva/ultimMissatge
+		// Si estava en marxa, el parem abans de tornar-lo a llançar
+		if (listenerUltimMissatge != null)
+			listenerUltimMissatge!!.remove()
 
-			if (snapshot != null && snapshot.exists()) {
-				ultimMissatge.setText(snapshot.getString("ultimMissatge"))
-				area.append(snapshot.getString("ultimUsuari") + ": " + snapshot.getString("ultimMissatge") + "\n")
-			} else {
-				println("Current data: null")
-			}
+		listenerUltimMissatge = docRef?.addSnapshotListener { snapshot, e ->
+				ultimMissatge.setText(snapshot?.getString("ultimMissatge"))
 		}
 
 		// Exemple de listener de lectura contínua addSnapshotListener() sobre una col·lecció
 		// Per a posar tota la llista de missatges. Sobre /Xats/XatProva/missatges
-		database.collection("Xats").document("XatProva").collection("missatges").addSnapshotListener { snapshots, e ->
-			if (e != null) {
-				System.err.println("Listen failed: " + e)
-				return@addSnapshotListener
-			}
+		// Si estava en marxa, el parem abans de tornar-lo a llançar
+		if (listenerMissatges != null)
+			listenerMissatges!!.remove()
 
-			for (dc in snapshots!!.getDocumentChanges()) {
-				when (dc.getType()) {
-					DocumentChange.Type.ADDED ->
-						area.append(
-							dc.getDocument().getString("usuari") + ": " + dc.getDocument().getString("missatge") + "\n"
-						)
+		listenerMissatges = database?.collection("Xats")?.document(comboXats.getSelectedItem().toString())?.collection("missatges")?.orderBy("data")?.addSnapshotListener { snapshots, e ->
 
-					DocumentChange.Type.MODIFIED ->
-						println("Missatge modificat: " + dc.getDocument().getData());
-
-					DocumentChange.Type.REMOVED ->
-						println("Missatge esborrat: " + dc.getDocument().getData());
+				for (dc in snapshots!!.getDocumentChanges()) {
+					val sdf = SimpleDateFormat("dd-MM-yyyy HH:mm")
+					if (dc.getDocument().getLong("data")!=null){
+					val d = sdf.format (Date (dc.getDocument().getLong("data")!!))
+					area.append(dc.getDocument().getString("nom") + " (" + d + "): "+ dc.getDocument().getString("contingut") + "\n")
+					}
+					else
+						area.append(dc.getDocument().getString("nom") + ": " + dc.getDocument().getString("contingut") + "\n")
 				}
 			}
-		}
 	}
 
 
@@ -140,24 +164,26 @@ class CrearXatCloud : JFrame() {
 	// Per a guardar dades. Sobre /Xats/XatProva i després sobre /Xats/Xat1
 	fun enviar() {
 		val database = FirestoreClient.getFirestore()
-		val docXatProva = database.collection("Xats").document("XatProva")
+		val docXat = database.collection("Xats").document(comboXats.getSelectedItem().toString())
 
 		val dades = HashMap<String, Any>()
 		dades.put("ultimUsuari", usuari.getText())
 		dades.put("ultimMissatge", missatge.getText())
 
-		docXatProva.update(dades)
+		docXat.update(dades)
 
 		val dades2 = HashMap<String, Any>()
-		dades2.put("usuari", usuari.getText())
-		dades2.put("missatge", missatge.getText())
-
-		database.collection("Xats").document("XatProva").collection("missatges").add(dades2)
+		dades2.put("nom", usuari.getText())
+		dades2.put("contingut", missatge.getText())
+		
+		val m = Missatge(usuari.getText(), System.currentTimeMillis(), missatge.getText())
+			docXat.collection("missatges").add(m)
 	}
+
 }
 
 fun main(args: Array<String>) {
 	EventQueue.invokeLater {
-		CrearXatCloud().isVisible = true
+		XatCloudMillorat().isVisible = true
 	}
 }
