@@ -104,12 +104,12 @@ class CrearXatCloud : JFrame() {
 
 			if (snapshot != null && snapshot.exists()) {
 				ultimMissatge.setText(snapshot.getString("ultimMissatge"))
-				area.append(snapshot.getString("ultimUsuari") + ": " + snapshot.getString("ultimMissatge") + "\n")
+				//area.append(snapshot.getString("ultimUsuari") + ": " + snapshot.getString("ultimMissatge") + "\n")
 			} else {
 				println("Current data: null")
 			}
 		}
-
+		
 		// Exemple de listener de lectura contínua addSnapshotListener() sobre una col·lecció
 		// Per a posar tota la llista de missatges. Sobre /Xats/XatProva/missatges
 		database.collection("Xats").document("XatProva").collection("missatges").addSnapshotListener { snapshots, e ->
@@ -121,9 +121,7 @@ class CrearXatCloud : JFrame() {
 			for (dc in snapshots!!.getDocumentChanges()) {
 				when (dc.getType()) {
 					DocumentChange.Type.ADDED ->
-						area.append(
-							dc.getDocument().getString("usuari") + ": " + dc.getDocument().getString("missatge") + "\n"
-						)
+						area.append(dc.getDocument().getString("nom") + ": " + dc.getDocument().getString("contingut") + "\n")
 
 					DocumentChange.Type.MODIFIED ->
 						println("Missatge modificat: " + dc.getDocument().getData());
@@ -149,8 +147,8 @@ class CrearXatCloud : JFrame() {
 		docXatProva.update(dades)
 
 		val dades2 = HashMap<String, Any>()
-		dades2.put("usuari", usuari.getText())
-		dades2.put("missatge", missatge.getText())
+		dades2.put("nom", usuari.getText())
+		dades2.put("contingut", missatge.getText())
 
 		database.collection("Xats").document("XatProva").collection("missatges").add(dades2)
 	}

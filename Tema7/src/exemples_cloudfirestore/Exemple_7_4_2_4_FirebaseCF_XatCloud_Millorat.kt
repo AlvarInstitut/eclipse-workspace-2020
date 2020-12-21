@@ -29,9 +29,8 @@ import com.google.firebase.cloud.FirestoreClient
 import com.google.cloud.firestore.ListenerRegistration
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.time.LocalDateTime
 
-class Missatge(var nom: String, var data: Long, var contingut: String)
+class Missatge(var nom: String, var data: Date, var contingut: String)
 
 class XatCloudMillorat : JFrame() {
 
@@ -136,7 +135,7 @@ class XatCloudMillorat : JFrame() {
 			listenerUltimMissatge!!.remove()
 
 		listenerUltimMissatge = docRef?.addSnapshotListener { snapshot, e ->
-				ultimMissatge.setText(snapshot?.getString("ultimMissatge"))
+			ultimMissatge.setText(snapshot?.getString("ultimMissatge"))
 		}
 
 		// Exemple de listener de lectura contínua addSnapshotListener() sobre una col·lecció
@@ -145,18 +144,15 @@ class XatCloudMillorat : JFrame() {
 		if (listenerMissatges != null)
 			listenerMissatges!!.remove()
 
-		listenerMissatges = database?.collection("Xats")?.document(comboXats.getSelectedItem().toString())?.collection("missatges")?.orderBy("data")?.addSnapshotListener { snapshots, e ->
-
-				for (dc in snapshots!!.getDocumentChanges()) {
-					val sdf = SimpleDateFormat("dd-MM-yyyy HH:mm")
-					if (dc.getDocument().getLong("data")!=null){
-					val d = sdf.format (Date (dc.getDocument().getLong("data")!!))
-					area.append(dc.getDocument().getString("nom") + " (" + d + "): "+ dc.getDocument().getString("contingut") + "\n")
-					}
-					else
-						area.append(dc.getDocument().getString("nom") + ": " + dc.getDocument().getString("contingut") + "\n")
-				}
+		listenerMissatges = docRef?.collection("missatges")?.orderBy("data")?.addSnapshotListener { snapshots, e ->
+			for (dc in snapshots!!.getDocumentChanges()) {
+				val dData = dc.getDocument().getDate("data")
+				val d = SimpleDateFormat("dd-MM-yyyy HH:mm").format(dData)
+				area.append(
+					dc.getDocument().getString("nom") + " (" + d + "): " + dc.getDocument().getString("contingut") + "\n"
+				)
 			}
+		}
 	}
 
 
@@ -175,9 +171,9 @@ class XatCloudMillorat : JFrame() {
 		val dades2 = HashMap<String, Any>()
 		dades2.put("nom", usuari.getText())
 		dades2.put("contingut", missatge.getText())
-		
-		val m = Missatge(usuari.getText(), System.currentTimeMillis(), missatge.getText())
-			docXat.collection("missatges").add(m)
+
+		val m = Missatge(usuari.getText(), Date(), missatge.getText())
+		docXat.collection("missatges").add(m)
 	}
 
 }
