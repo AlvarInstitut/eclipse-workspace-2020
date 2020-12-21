@@ -45,21 +45,38 @@ class FinestraAgenda : JFrame() {
 
 		FirebaseApp.initializeApp(options)
 		val database = FirestoreClient.getFirestore()
-		val docRef = database.collection("Xats").document("XatProva")
-		
-		database.collection("Agenda").orderBy("data")?.addSnapshotListener { snapshots, e ->
-			listModel.removeAllElements()
+		database.collection("Agenda")
+		//val docRef = database.collection("Xats").document("XatProva")
+		// Exemple de lectura única: senzillament sobre un ApiFuture i sobre ell get()
+		// Per a posar el títol. Sobre /Xats/XatProva/nomXat
+		//val nomXat = future.get().getString("nomXat")
+		//this.setTitle(nomXat)
+		list.addListSelectionListener() {
+			if (list.getSelectedIndex() >= 0) {
+				area.setText("")
+				val llistaCamps = list.getSelectedValue().split(":")
+				println(llistaCamps[0])
+				val docRef = database.collection("Xats").whereEqualTo("data", llistaCamps[0]).get().get()
+				for (doc in docRef!!)
+					println(doc.getString("nom"))
+			}
+		}
+
+		database.collection("Agenda").orderBy("data").addSnapshotListener { snapshots, e ->
+			//listModel.removeAllElements()
 			if (e != null) {
 				System.err.println("Listen failed: " + e)
 				return@addSnapshotListener
 			}
-
 			for (dc in snapshots!!.getDocumentChanges()) {
 				when (dc.getType()) {
 					DocumentChange.Type.ADDED -> {
 						val doc = dc.getDocument()
-						val d = SimpleDateFormat("dd-MM-yyyy HH:mm").format(doc.getDate("data"))
-						listModel.addElement(d + ": " + doc.getString("nom") + "\n")
+						listModel.addElement(doc.getDate("data").toString() + ": " + doc.getString("nom"))
+						//if (doc.getDate("data") != null) {
+						//val d = SimpleDateFormat("dd-MM-yyyy HH:mm").format(doc.getDate("data"))
+						//listModel.addElement(d + ": " + doc.getString("nom"))
+
 					}
 
 					DocumentChange.Type.MODIFIED ->
@@ -69,20 +86,11 @@ class FinestraAgenda : JFrame() {
 						println("Missatge esborrat: " + dc.getDocument().getData());
 				}
 			}
-		
+
 		}
 
 
-		list.addListSelectionListener() {
-			if (list.getSelectedIndex() >= 0)
-				visualitzaEsdeveniment(list.getSelectedValue())
-		}
-	}
 
-
-	fun visualitzaEsdeveniment(estacio: String) {
-		// Instruccions per a mostrar les característiques en el area, el JTextArea de la dreta
-		area.setText("")
 
 	}
 }
