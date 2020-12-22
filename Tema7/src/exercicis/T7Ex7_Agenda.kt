@@ -17,10 +17,11 @@ class FinestraAgenda : JFrame() {
 	var listModel = DefaultListModel<String>()
 	var list = JList(listModel)
 	var area = JTextArea(5, 15)
+	val eixir =JButton("Eixir")
 
 	init {
 
-		defaultCloseOperation = JFrame.EXIT_ON_CLOSE
+		defaultCloseOperation = JFrame.DO_NOTHING_ON_CLOSE
 		setTitle("Firebase: Agenda")
 		setSize(800, 800)
 		setLayout(BorderLayout())
@@ -36,6 +37,8 @@ class FinestraAgenda : JFrame() {
 		panell2.add(scroll2)
 
 		panell1.add(JLabel("AGENDA"))
+		
+		add(eixir,BorderLayout.SOUTH)
 
 		val serviceAccount = FileInputStream("acces-a-dades-6e5a6-firebase-adminsdk-ei7uc-fcf7da56aa.json")
 
@@ -45,7 +48,7 @@ class FinestraAgenda : JFrame() {
 
 		FirebaseApp.initializeApp(options)
 		val database = FirestoreClient.getFirestore()
-		database.collection("Agenda")
+		//database.collection("Agenda")
 		//val docRef = database.collection("Xats").document("XatProva")
 		// Exemple de lectura única: senzillament sobre un ApiFuture i sobre ell get()
 		// Per a posar el títol. Sobre /Xats/XatProva/nomXat
@@ -65,33 +68,37 @@ class FinestraAgenda : JFrame() {
 		database.collection("Agenda").orderBy("data").addSnapshotListener { snapshots, e ->
 			//listModel.removeAllElements()
 			if (e != null) {
-				System.err.println("Listen failed: " + e)
+				println("Listen failed: " + e)
 				return@addSnapshotListener
 			}
-			for (dc in snapshots!!.getDocumentChanges()) {
-				when (dc.getType()) {
-					DocumentChange.Type.ADDED -> {
-						val doc = dc.getDocument()
-						listModel.addElement(doc.getDate("data").toString() + ": " + doc.getString("nom"))
-						//if (doc.getDate("data") != null) {
-						//val d = SimpleDateFormat("dd-MM-yyyy HH:mm").format(doc.getDate("data"))
-						//listModel.addElement(d + ": " + doc.getString("nom"))
+			if (snapshots != null) {
+				for (dc in snapshots.getDocumentChanges()) {
+					when (dc.getType()) {
+						DocumentChange.Type.ADDED -> {
+							val doc = dc.getDocument()
+							//listModel.addElement(doc.getDate("data").toString() + ": " + doc.getString("nom"))
+							val d = SimpleDateFormat("dd-MM-yyyy HH:mm").format(doc.getDate("data"))
+							listModel.addElement(d + ": " + doc.getString("nom"))
+							//listModel.addElement(doc.getDate("data").toString() + ": " + doc.getString("nom"))
+						}
 
+						DocumentChange.Type.MODIFIED ->
+							println("Missatge modificat: " + dc.getDocument().getData());
+
+						DocumentChange.Type.REMOVED ->
+							println("Missatge esborrat: " + dc.getDocument().getData());
 					}
-
-					DocumentChange.Type.MODIFIED ->
-						println("Missatge modificat: " + dc.getDocument().getData());
-
-					DocumentChange.Type.REMOVED ->
-						println("Missatge esborrat: " + dc.getDocument().getData());
 				}
 			}
+			else
+				println("No hi ha documents")
 
 		}
 
-
-
-
+		eixir.addActionListener(){
+			database.close()
+			System.exit(0)
+		}
 	}
 }
 
