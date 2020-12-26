@@ -16,7 +16,7 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.cloud.FirestoreClient
 import java.awt.EventQueue
 
-class Estadistiques : JFrame() {
+class EstadisticaCF : JFrame() {
 
 	val etCombo = JLabel("Llista de províncies:")
 	val comboProv = JComboBox<String>()
@@ -64,11 +64,11 @@ class Estadistiques : JFrame() {
 			for (document in documents) {
 				llistaProvs.add(document.getString("Provincia")!!)
 			}
-		}
-		
+		}		
 		for (p in llistaProvs.sorted())
 			comboProv.addItem(p)
-
+		
+		// Instruccions per agafar la informació de tots els anys de la província triada
 		comboProv.addActionListener() {
 			area.setText("")
 			db.collection("Estadistica").whereEqualTo("Provincia", comboProv.getSelectedItem()).orderBy("any").addSnapshotListener { snapshots, e ->
@@ -88,6 +88,6 @@ class Estadistiques : JFrame() {
 
 fun main(args: Array<String>) {
 	EventQueue.invokeLater {
-		Estadistiques().isVisible = true
+		EstadisticaCF().isVisible = true
 	}
 }
