@@ -15,11 +15,8 @@ import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ChildEventListener
-import org.json.JSONArray
-import org.json.JSONObject
 import java.awt.EventQueue
 
 
@@ -63,14 +60,14 @@ class EstadisticaRD : JFrame() {
 
 		FirebaseApp.initializeApp(options)
 
-		// Exemple de listener d'una llista addChildEventListener()
-		// Per a posar tota la llista de províncies al JComboBox
+		// Posar tota la llista de províncies al JComboBox
 		val est = FirebaseDatabase.getInstance().getReference("EstadisticaVariacioPoblacional")
-
+		println("Connexió")
 		est.addChildEventListener(
 			object : ChildEventListener {
 				override
 				fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
+					println(dataSnapshot.child("Nombre").getValue().toString())
 					provincia.addItem(dataSnapshot.child("Nombre").getValue().toString())
 				}
 
@@ -93,8 +90,7 @@ class EstadisticaRD : JFrame() {
 		)
 
 		provincia.addActionListener() {
-			// Exemple de listener de lectura única addListenerForSingleValue()
-			// Per a posar el títol. Sobre nomXat
+			// Posar la informació de tots els anys en el JTextArea
 			area.setText("")
 			val provin = est.child(provincia.getSelectedIndex().toString()).child("Data")
 			provin.addChildEventListener(
