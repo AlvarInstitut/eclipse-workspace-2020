@@ -60,7 +60,7 @@ class SonsCS_CF : JFrame() {
 
 		val db = FirestoreClient.getFirestore()
 
-		// Instruccions per a omplir el JComboBox amb les províncies
+		// Instruccions per a omplir el JComboBox amb els audios
 		val documents = db.collection("Audios").get().get().getDocuments()
 		val llistaAudios = ArrayList<String>()
 		val llistaFitxers = ArrayList<String>()
