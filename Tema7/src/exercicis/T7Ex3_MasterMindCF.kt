@@ -86,34 +86,36 @@ class MastermindCF : JFrame() {
 
 		val db = FirestoreClient.getFirestore()
 		val mm = db.collection("Mastermind")
-		mm.addSnapshotListener { snapshots, e ->
-			for (dc in snapshots!!.getDocumentChanges()) {
-				docNom = dc.getDocument().getId()
-				println(docNom)
-				secMaster = dc.getDocument().getString("numSecret")!!
-				println(secMaster)
-				finalitzada = dc.getDocument().getBoolean("finalitzada")!!
-				// Comprovació de si la partida està en marxa
-				if (finalitzada) {
-					println("Nova")
-					novaPartida()
-				} else {
+		mm.whereEqualTo("finalitzada", false).addSnapshotListener { snapshots, e ->
+			// Comprovació de si la partida està en marxa
+			if (snapshots!!.getDocumentChanges().size > 0) {
+				for (dc in snapshots!!.getDocumentChanges()) {
+					docNom = dc.getDocument().getId()
+					println(docNom)
+					secMaster = dc.getDocument().getString("numSecret")!!
+					println(secMaster)
+					finalitzada = dc.getDocument().getBoolean("finalitzada")!!
+
 					secret = secMaster
 					println("Vella")
-				}
-				// Visualització de jugades
-				mm.document(docNom).collection("tirades").orderBy("data").addSnapshotListener { snapshots, e ->
-					for (dc in snapshots!!.getDocumentChanges()) {
-						area.append(
-							dc.getDocument().getString("nom") + ": " + dc.getDocument().getString("tirada") + " " +
-									dc.getDocument().getString("colocades") + " " + dc.getDocument()
-								.getString("desordenades") + "\n"
-						)
+					// Visualització de jugades
+					mm.document(docNom).collection("tirades").orderBy("data").addSnapshotListener { snapshots, e ->
+						for (dc in snapshots!!.getDocumentChanges()) {
+							area.append(
+								dc.getDocument().getString("nom") + ": " + dc.getDocument().getString("tirada") + " " +
+										dc.getDocument().get("colocades").toString() + " " + dc.getDocument()
+									.get("desordenades").toString() + "\n"
+							)
 
-						if (dc.getDocument().getString("colocades") == "4")
-							finalPartida()
+							if (dc.getDocument().get("colocades").toString() == "4")
+								finalPartida()
+						}
 					}
 				}
+			} else {
+				println("Nova")
+				novaPartida()
+
 			}
 		}
 
@@ -139,27 +141,32 @@ class MastermindCF : JFrame() {
 		val mm = db.collection("Mastermind")
 
 		// He d'assegurar-me que algun altre no l'ha ficada en marxa		
-		val finalitza = mm.document(docNom).get().get().getBoolean("finalitzada")
-		if (finalitza!!) {
-			val dades = HashMap<String, Any>()
-			dades.put("finalitzada", false)
-			secret = genera()
-			dades.put("numSecret", secret)
 
-			mm.document(docNom).update(dades)
+		mm.whereEqualTo("finalitzada", false).addSnapshotListener { snapshots, e ->
+			// Comprovació de si la partida està en marxa
+			if (snapshots!!.getDocumentChanges().size == 0) {
 
-			// em falta esborrar els documents de la col·lecció tirades
-		} else {
-			secret = mm.document(docNom).get().get().getString("numSecret")!!
+				val dades = HashMap<String, Any>()
+				dades.put("finalitzada", false)
+				secret = genera()
+				dades.put("numSecret", secret)
+
+				val nouDoc = mm.add(dades)
+				docNom = nouDoc.get().getId()
+
+				
+			} else {
+				secret = mm.document(docNom).get().get().getString("numSecret")!!
+			}
+
+
+
+			etIntroduccioJugada.setVisible(true)
+			tirada.setVisible(true)
+			enviar.setVisible(true)
+			novaPartida.setVisible(false)
+
 		}
-
-
-
-		etIntroduccioJugada.setVisible(true)
-		tirada.setVisible(true)
-		enviar.setVisible(true)
-		novaPartida.setVisible(false)
-
 	}
 
 	fun finalPartida() {
@@ -203,6 +210,7 @@ class MastermindCF : JFrame() {
 					else nopos++
 		return intArrayOf(pos, nopos)
 	}
+
 }
 
 
