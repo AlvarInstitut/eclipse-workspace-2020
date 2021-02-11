@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.jetbrains.kotlin.core.KOTLIN_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/alvar/Drivers 2020/BaseX/basex-xqj-1.4.0.jar"/>
-	<classpathentry kind="lib" path="/home/alvar/Drivers 2020/BaseX/xqj2-0.2.0.jar"/>
-	<classpathentry kind="lib" path="/home/alvar/Drivers 2020/BaseX/xqj-api-1.0.jar"/>
-	<classpathentry kind="lib" path="/home/alvar/Drivers 2019/XQJ/exist-xqj-1.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/alvar/Drivers2020/XQJ/exist-xqj-1.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/alvar/Drivers2020/XQJ/xqj2-0.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/alvar/Drivers2020/XQJ/xqjapi.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java-8-openjdk-amd64"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
