@@ -1,9 +1,6 @@
 package exemples
 
 import net.xqj.exist.ExistXQDataSource
-import java.io.File
-import java.io.IOException
-import java.util.Properties
 
 fun main() {
 	//val f = File("notes.xml")
@@ -21,21 +18,11 @@ fun main() {
 								"order by \$alumne/cognoms " +
 								"return <alumne nota=\"{\$alumne/nota/text()}\">" +
 									"{concat(\$alumne/nom/text(), \" \", \$alumne/cognoms)}" +
-									"</alumne>}</modul></notes> ";
+									"</alumne>}</modul></notes> "
 
-	val cons = conn.prepareExpression (sent)
-
-	val rs = cons.executeQuery ()
-	var text ="<?xml version=\"1.0\" ?>\n"
-	while (rs.next()) {
-		text += rs.getItemAsString (null)
-		}
-	println(text)
-	//f.writeText(text)                                 // Per a guardar en un fitxer
-	//rs.writeSequence(f.outputStream(),Properties())   // Per a guardar en un fitxer, però molt més ràpid
 	val col = "Tema9"
-	val doc = "classe_Kotlin2.xml"
-	val com = "xmldb:store('$col', '$doc', '$text')"
+	val doc = "classe_Kotlin_2.xml"
+	val com = "xmldb:store('$col', '$doc', $sent)"
 	println(com)
 	conn.createExpression().executeCommand(com)
 	conn.close()
