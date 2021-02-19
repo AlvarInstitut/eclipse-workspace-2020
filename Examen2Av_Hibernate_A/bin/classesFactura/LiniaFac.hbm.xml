@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 19 de febr. 2021, 12:15:29 by Hibernate Tools 5.2.12.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class dynamic-insert="false" dynamic-update="false" mutable="true" name="classesFactura.LiniaFac" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="linia_fac">
+        <id name="numL" type="int">
+            <column name="num_l" precision="7" scale="0"/>
+            <generator class="assigned"/>
+        </id>
+        <many-to-one class="classesFactura.Article" embed-xml="true" fetch="select" insert="true" name="article" not-found="exception" optimistic-lock="true" unique="false" update="true">
+            <column length="10" name="cod_a" not-null="true"/>
+        </many-to-one>
+        <many-to-one class="classesFactura.Factura" embed-xml="true" fetch="select" insert="true" name="factura" not-found="exception" optimistic-lock="true" unique="false" update="true">
+            <column name="num_f" not-null="true" precision="5" scale="0"/>
+        </many-to-one>
+        <property generated="never" lazy="false" name="quant" optimistic-lock="true" type="java.lang.Integer" unique="false">
+            <column name="quant" precision="5" scale="0"/>
+        </property>
+        <property generated="never" lazy="false" name="preu" optimistic-lock="true" type="big_decimal" unique="false">
+            <column name="preu" precision="6"/>
+        </property>
+    </class>
+</hibernate-mapping>
