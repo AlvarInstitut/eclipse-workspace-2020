@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 19 de febr. 2021, 12:15:29 by Hibernate Tools 5.2.12.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class dynamic-insert="false" dynamic-update="false" mutable="true" name="classesFactura.Factura" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="factura">
+        <id name="numF" type="int">
+            <column name="num_f" precision="5" scale="0"/>
+            <generator class="assigned"/>
+        </id>
+        <many-to-one class="classesFactura.Client" embed-xml="true" fetch="select" insert="true" name="client" not-found="exception" optimistic-lock="true" unique="false" update="true">
+            <column name="cod_cli" not-null="true" precision="5" scale="0"/>
+        </many-to-one>
+        <property generated="never" lazy="false" name="data" optimistic-lock="true" type="date" unique="false">
+            <column length="13" name="data"/>
+        </property>
+        <property generated="never" lazy="false" name="codVen" optimistic-lock="true" type="java.lang.Integer" unique="false">
+            <column name="cod_ven" precision="5" scale="0"/>
+        </property>
+        <property generated="never" lazy="false" name="iva" optimistic-lock="true" type="java.lang.Byte" unique="false">
+            <column name="iva" precision="2" scale="0"/>
+        </property>
+        <set embed-xml="true" fetch="select" inverse="true" lazy="true" mutable="true" name="liniaFacs" optimistic-lock="true" sort="unsorted" table="linia_fac">
+            <key on-delete="noaction">
+                <column name="num_f" not-null="true" precision="5" scale="0"/>
+            </key>
+            <one-to-many class="classesFactura.LiniaFac" embed-xml="true" not-found="exception"/>
+        </set>
+    </class>
+</hibernate-mapping>

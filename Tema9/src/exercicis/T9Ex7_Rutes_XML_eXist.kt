@@ -121,6 +121,7 @@ class T9Ex7_Rutes_XML_eXist : JFrame() {
 	}
 
 	fun inicialitzar() {
+		s.setProperty("serverName","89.36.214.106")
 		conn = s.getConnection()
 		val sent = "//ruta"
 		val cntxt = conn?.getStaticContext()
