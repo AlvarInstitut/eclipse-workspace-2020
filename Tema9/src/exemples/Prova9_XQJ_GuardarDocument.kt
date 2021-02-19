@@ -6,7 +6,7 @@ import java.io.IOException
 import java.util.Properties
 
 fun main() {
-	val f = File("notes.xml")
+	//val f = File("notes.xml")
 	val s = ExistXQDataSource()
 	s.setProperty("serverName", "89.36.214.106")
 	s.setProperty("port", "8080")
@@ -26,12 +26,14 @@ fun main() {
 	val cons = conn.prepareExpression (sent)
 
 	val rs = cons.executeQuery ()
-	var text ="<?xml version='1.0' ?>\n"
+	var text ="<?xml version=\"1.0\" ?>\n"
 	while (rs.next()) {
 		text += rs.getItemAsString (null)
 		}
-	println(text)
-	f.writeText(text)
-	//rs.writeSequence(f.outputStream(),Properties())   // Açò molt més ràpid
+	val col = "Tema9"
+	val doc = "classe_Kotlin.xml"
+	val com = "xmldb:store('$col', '$doc', '$text')"
+	println(com)
+	conn.createExpression().executeCommand(com)
 	conn.close()
 }
