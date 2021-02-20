@@ -91,13 +91,10 @@ class MastermindCF : JFrame() {
 			if (snapshots!!.getDocumentChanges().size > 0) {
 				for (dc in snapshots!!.getDocumentChanges()) {
 					docNom = dc.getDocument().getId()
-					println(docNom)
 					secMaster = dc.getDocument().getString("numSecret")!!
-					println(secMaster)
 					finalitzada = dc.getDocument().getBoolean("finalitzada")!!
 
 					secret = secMaster
-					println("Vella")
 					// Visualització de jugades
 					mm.document(docNom).collection("tirades").orderBy("data").addSnapshotListener { snapshots, e ->
 						for (dc in snapshots!!.getDocumentChanges()) {

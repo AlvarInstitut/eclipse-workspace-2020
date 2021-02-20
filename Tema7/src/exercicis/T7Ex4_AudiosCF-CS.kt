@@ -82,12 +82,10 @@ class SonsCS_CF : JFrame() {
 			blob?.downloadTo(destFilePath)
 
 			clip = Applet.newAudioClip(destFilePath.toUri().toURL())
-			//println(destFilePath.toFile().size())
 
 		}
 
 		play.addActionListener() {
-			println("A sonar")
 			clip?.loop()
 		}
 

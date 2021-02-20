@@ -81,6 +81,7 @@ class EstadisticaCF : JFrame() {
 					}
 				}
 		}
+		comboProv.setSelectedIndex(0)
 
 
 	}
