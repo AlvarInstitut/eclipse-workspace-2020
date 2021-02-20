@@ -21,7 +21,7 @@ class EstadisticaRD : JFrame() {
 	val listModel = DefaultListModel<String>()
 	val llClaus = JList(listModel)
 
-	val con = Jedis("localhost")
+	val con = Jedis("89.36.214.106")
 
 	init {
 		defaultCloseOperation = JFrame.EXIT_ON_CLOSE
@@ -50,7 +50,7 @@ class EstadisticaRD : JFrame() {
 	}
 
 	fun inicialitzar() {
-		val con = Jedis("localhost")
+		con.auth("ieselcaminas.ad")
 		val claus = con.keys("*").sorted()
 		for (c in claus)
 			listModel.addElement(c)

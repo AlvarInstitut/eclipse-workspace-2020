@@ -1,0 +1,47 @@
+XQUERY
+
+1. El mòdul amb el nom del professor com a atribut:
+
+<modul profesor="{string-join((//professor/nom/text(), //professor/cognoms/text()), " ")}">
+    {  //assignatura/text() }
+</modul>
+
+o
+
+element modul {
+    attribute professor {concat(//professor/nom/text()," ",//professor/cognoms/text())},
+    //assignatura/text()
+}
+
+2. El nom de cada ruta amb el número de punts com a argument:
+
+<rutes>
+{ for $ruta in //ruta
+  return <ruta numPunts="{count($ruta//punt)}"> { $ruta/nom/text() } </ruta>}
+</rutes>
+
+3. Cada ruta amb el nom com a atribut, la latitud mitjana dels seus punts i la longitud mitjana:
+
+for $ruta in //ruta
+let $lat_mitj := avg($ruta//latitud)
+let $long_mitj := avg($ruta//longitud)
+
+return <ruta nom="{$ruta/nom/text()}"> 
+        <lat_mitj> { $lat_mitj } </lat_mitj>  
+        <long_mitj> { $long_mitj  } </long_mitj>
+    </ruta>
+
+
+4. La mitjana de punts de les rutes:
+
+avg(for $ruta in //ruta
+    return count($ruta//punt) )
+
+
+5. Quants punts de cada ruta estan en l'hemisferi est (és a dir, longitud positiva):
+
+for $ruta in //ruta
+let $p := count($ruta//punt[longitud>=0])
+
+return concat($ruta/nom/text(), ": ", $p)
+
