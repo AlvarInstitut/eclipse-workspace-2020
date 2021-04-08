@@ -11,6 +11,7 @@ fun main(args: Array<String>) {
 	try {
 		while (true) {
 			val r = f.readObject() as Ruta
+			println("El nom de la ruta és ${r.nom}")
 			r.mostrarRuta()
 			println("--------------------------------------")
 

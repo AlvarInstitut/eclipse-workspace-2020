@@ -3,8 +3,10 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.jetbrains.kotlin.core.KOTLIN_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Hibernate"/>
-	<classpathentry kind="lib" path="/home/alvar/Drivers2020/postgresql-42.2.12.jar"/>
 	<classpathentry kind="lib" path="/home/alvar/Drivers2020/db4o-8.0.276.16149-core-java5.jar"/>
+	<classpathentry kind="lib" path="/home/alvar/Drivers2020/jedis-3.5.0.jar"/>
+	<classpathentry kind="lib" path="/home/alvar/Drivers2020/XQJ/exist-xqj-1.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/alvar/Drivers2020/XQJ/xqj2-0.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/alvar/Drivers2020/XQJ/xqjapi.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

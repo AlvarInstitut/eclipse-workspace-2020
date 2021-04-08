@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.org/dtd/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+  <table-filter match-schema="public" match-name="autor"/>
+  <table-filter match-schema="public" match-name="autor_llibre"/>
+  <table-filter match-schema="public" match-name="editorial"/>
+  <table-filter match-schema="public" match-name="llibre"/>
+</hibernate-reverse-engineering>

@@ -12,7 +12,7 @@ public class Prova1 {
         
         Document doc = new Document();
         doc.put("msg4", "Missatge inserit des de Java");
-        bd.getCollection("exemple").insertOne(doc);
+        bd.getCollection("exempleJava").insertOne(doc);
         
         con.close();
     }
